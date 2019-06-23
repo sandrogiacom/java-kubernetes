@@ -36,9 +36,30 @@ java -jar target/java-kubernetes-0.0.1-SNAPSHOT.jar
 http://localhost:8080/persons
 
 
-
 ## Part two.
 
 Pack application in a docker container
+
+Create a Dockerfile
+
+Build image
+```bash
+docker build -t java-k8s .
+```
+
+Create and run container
+```bash
+docker run --name myapp -p 8080:8080 -e DATABASE_SERVER_NAME=mysql57 --link mysql57:mysql57 java-k8s:latest
+```
+
+##Good practices
+
+Use enviorement variables
+
+Use entrypoint
+
+
+
+
 
 
