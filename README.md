@@ -34,11 +34,3 @@ java -jar target/java-kubernetes-0.0.1-SNAPSHOT.jar
 
 **Check**
 http://localhost:8080/persons
-
-
-
-## Part two.
-
-Pack application in a docker container
-
-
