@@ -7,4 +7,5 @@ WORKDIR /usr/myapp
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
+
