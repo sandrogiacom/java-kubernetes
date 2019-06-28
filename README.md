@@ -2,29 +2,24 @@
 
 Show how you can move your spring boot application to docker and kubernetes
 
-## Part one:
+## Part one - base app:
 
 ### Requirements:
 
-**Docker**
+**Docker and Make**
 
 ### Build and run application:
 
 Spring boot and mysql database running on docker
 
-**Start the database**
-```bash
-docker run --name mysql57 -p 3306:3306 \
--e MYSQL_ROOT_PASSWORD=123456 \
--e MYSQL_USER=java \
--e MYSQL_PASSWORD=1234 \
--e MYSQL_DATABASE=k8s_java \
--d mysql/mysql-server:5.7
-```
-
 **Build application**
 ```bash
 mvn clean install
+```
+
+**Start the database**
+```bash
+make run:db
 ```
 
 **Run application**
@@ -36,20 +31,29 @@ java -jar target/java-kubernetes-0.0.1-SNAPSHOT.jar
 http://localhost:8080/persons
 
 
-## Part two.
+## Part two - app on Docker:
 
 Pack application in a docker container
 
-Create a Dockerfile
+Create a Dockerfile:
+
+```yaml
+FROM openjdk:11.0.3-jdk-slim
+RUN mkdir /usr/myapp
+COPY target/java-kubernetes-0.0.1-SNAPSHOT.jar /usr/myapp/app.jar
+WORKDIR /usr/myapp
+EXPOSE 8080
+CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
+```
 
 Build image
 ```bash
-docker build -t java-k8s .
+make build
 ```
 
-Create and run container
+Create and run the container
 ```bash
-docker run --name myapp -p 8080:8080 -e DATABASE_SERVER_NAME=mysql57 --link mysql57:mysql57 java-k8s:latest
+make run:app
 ```
 
 ##Good practices
