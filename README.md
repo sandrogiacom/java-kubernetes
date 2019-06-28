@@ -56,6 +56,10 @@ Create and run the container
 make run:app
 ```
 
+**Check**
+http://localhost:8080/persons
+
+
 ##Good practices
 
 Use enviorement variables
