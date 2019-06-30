@@ -63,3 +63,22 @@ make run:app
 **Check**
 http://localhost:8080/persons
 
+
+## Part three - app on Kubernetes:
+
+**Minikube and VirtualBox**
+
+We have an application and image running in docker
+Now, we deploy application in a kunernetes cluster running in our machine
+
+Prepare
+
+Start minikube
+
+Create deployment file
+Create service file
+
+
+
+
+
