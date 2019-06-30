@@ -33,8 +33,6 @@ http://localhost:8080/persons
 
 ## Part two - app on Docker:
 
-Pack application in a docker container
-
 Create a Dockerfile:
 
 ```yaml
@@ -46,28 +44,22 @@ EXPOSE 8080
 CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
 ```
 
-Build image
+**Build application and docker image**
+
 ```bash
 make build
 ```
 
-Create and run the container
+Create and run the database
+```bash
+make run:db
+```
+
+Create and run the application
 ```bash
 make run:app
 ```
 
 **Check**
 http://localhost:8080/persons
-
-
-##Good practices
-
-Use enviorement variables
-
-Use entrypoint
-
-
-
-
-
 
