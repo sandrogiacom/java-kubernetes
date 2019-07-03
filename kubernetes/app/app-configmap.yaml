@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp
+  namespace: dev-to
+data:
+  DATABASE_SERVER_NAME: "mysql"
+  DATABASE_USER_NAME: "myapp"
+  DATABASE_USER_PASSWORD: "myapp_pwd"

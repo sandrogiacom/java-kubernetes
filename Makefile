@@ -66,3 +66,27 @@ rm\:db:
 	make stop:db; \
 	docker rm mysql57
 
+# Rule "k:setup"
+.PHONY: k\:setup
+.SILENT: k\:setup
+k\:setup:
+	minikube -p dev.to start --cpus 2 --memory=4098; \
+	minikube -p dev.to addons enable ingress; \
+	kubectl create namespace dev-to
+
+# Rule "k:db"
+.SILENT: k\:db
+k\:db:
+	kubectl create -f kubernetes/mysql/;
+
+# Rule "k:build"
+.PHONY: k\:build
+.SILENT: k\:build
+k\:build:
+	mvn clean install; \
+	eval $$(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .;
+
+# Rule "k:app"
+.SILENT: k\:app
+k\:app:
+	kubectl create -f kubernetes/app/;

@@ -75,7 +75,52 @@ Now, we deploy application in a kunernetes cluster running in our machine
 
 Prepare
 
-Start minikube
+### Start minikube
+`make k:setup` start minikube, enable ingress and create namespace dev-to
+
+
+### Deploy database
+
+`make k:db` create mysql deployment and service
+
+`k get pods -n=dev-to`
+
+`k port-forward -n=dev-to <pod_name> 3306:3306`
+
+## Create application
+
+`make k:build` build app and create docker image inside minikube machine
+
+`make k:app` create app deployment and service
+
+## Check pods
+
+`k get pods -n=dev-to`
+
+## Check app url
+`minikube -p=dev.to service -n dev-to myapp --url`
+
+`curl -X GET http://192.168.99.132:31838/persons`
+
+## Minikube dashboard
+
+`minikube -p dev.to dashboard`
+
+minikube -p=dev.to service -n dev-to myapp --url
+
+
+
+## Mapping local Docker deamon to Minikube
+`eval $(minikube -p dev.to docker-env)`
+
+
+configure application database url
+
+build image 
+`make k:build`
+
+`docker images`
+
 
 Create deployment file
 Create service file
