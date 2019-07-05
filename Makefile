@@ -9,12 +9,18 @@ help:
 	echo "Rules:"
 	echo ""
 	echo "build 		- build application and generate docker image"
-	echo "run:db 		- run mysql database"
-	echo "run:app		- run application"
+	echo "run:db 		- run mysql database on docker"
+	echo "run:app		- run application on docker"
 	echo "stop:app	- stop application"
 	echo "stop:db		- stop database"
 	echo "rm:app		- stop and delete application"
 	echo "rm:db		- stop and delete database"
+	echo "k:setup		- init minikube machine"
+	echo "k:deploy-db	- deploy mysql on cluster"
+	echo "k:build-app	- build app and create docker image inside minikube"
+	echo "k:deploy-app	- deploy app on cluster"
+	echo "k:delete	- stop and delete minikube machine"
+	echo "check		- check tools versions"
 	echo "help		- show this message"
 
 # Rule "build"
@@ -74,19 +80,32 @@ k\:setup:
 	minikube -p dev.to addons enable ingress; \
 	kubectl create namespace dev-to
 
-# Rule "k:db"
-.SILENT: k\:db
-k\:db:
+# Rule "k:deploy-db"
+.SILENT: k\:deploy-db
+k\:deploy-db:
 	kubectl create -f kubernetes/mysql/;
 
-# Rule "k:build"
-.PHONY: k\:build
-.SILENT: k\:build
-k\:build:
+# Rule "k:build-app"
+.SILENT: k\:build-app
+k\:build-app:
 	mvn clean install; \
 	eval $$(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .;
 
-# Rule "k:app"
-.SILENT: k\:app
-k\:app:
+# Rule "k:deploy-app"
+.SILENT: k\:deploy-app
+k\:deploy-app:
 	kubectl create -f kubernetes/app/;
+
+# Rule "k:delete"
+.SILENT: k\:delete
+k\:delete:
+	minikube -p dev.to stop && minikube -p dev.to delete
+
+# Rule "check"
+.SILENT: check
+check:
+	echo "make version " && make --version && echo
+	minikube version && echo
+	echo "kubectl version" && kubectl version --short --client && echo
+	echo "virtualbox version" && vboxmanage --version  && echo
+

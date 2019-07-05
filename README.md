@@ -14,9 +14,14 @@ https://dev.to/sandrogiacom/kubernetes-for-java-developers-setup-41nk
 
 Spring boot and mysql database running on docker
 
+**Clone from repository**
+```bash
+git clone https://github.com/sandrogiacom/java-kubernetes.git
+```
+
 **Build application**
 ```bash
-mvn clean install
+make build
 ```
 
 **Start the database**
@@ -65,10 +70,7 @@ make run:app
 **Check**
 http://localhost:8080/persons
 
-
 ## Part three - app on Kubernetes:
-
-**Minikube and VirtualBox**
 
 We have an application and image running in docker
 Now, we deploy application in a kunernetes cluster running in our machine
@@ -78,7 +80,6 @@ Prepare
 ### Start minikube
 `make k:setup` start minikube, enable ingress and create namespace dev-to
 
-
 ### Deploy database
 
 `make k:db` create mysql deployment and service
@@ -87,7 +88,7 @@ Prepare
 
 `k port-forward -n=dev-to <pod_name> 3306:3306`
 
-## Create application
+## Build application and deploy
 
 `make k:build` build app and create docker image inside minikube machine
 
@@ -100,32 +101,10 @@ Prepare
 ## Check app url
 `minikube -p=dev.to service -n dev-to myapp --url`
 
+Change your IP and PORT as you need it
+
 `curl -X GET http://192.168.99.132:31838/persons`
 
 ## Minikube dashboard
 
 `minikube -p dev.to dashboard`
-
-minikube -p=dev.to service -n dev-to myapp --url
-
-
-
-## Mapping local Docker deamon to Minikube
-`eval $(minikube -p dev.to docker-env)`
-
-
-configure application database url
-
-build image 
-`make k:build`
-
-`docker images`
-
-
-Create deployment file
-Create service file
-
-
-
-
-
