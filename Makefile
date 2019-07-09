@@ -16,6 +16,8 @@ help:
 	echo "rm:app		- stop and delete application"
 	echo "rm:db		- stop and delete database"
 	echo "k:setup		- init minikube machine"
+	echo "k:start		- start minikube machine"
+	echo "k:stop		- stop minikube machine"
 	echo "k:deploy-db	- deploy mysql on cluster"
 	echo "k:build-app	- build app and create docker image inside minikube"
 	echo "k:deploy-app	- deploy app on cluster"
@@ -79,6 +81,18 @@ k\:setup:
 	minikube -p dev.to start --cpus 2 --memory=4098; \
 	minikube -p dev.to addons enable ingress; \
 	kubectl create namespace dev-to
+
+# Rule "k:start"
+.PHONY: k\:start
+.SILENT: k\:start
+k\:start:
+	minikube -p dev.to start;
+
+# Rule "k:stop"
+.PHONY: k\:stop
+.SILENT: k\:stop
+k\:stop:
+	minikube -p dev.to stop;
 
 # Rule "k:deploy-db"
 .SILENT: k\:deploy-db

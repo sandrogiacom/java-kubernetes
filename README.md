@@ -82,7 +82,7 @@ Prepare
 
 ### Deploy database
 
-`make k:db` create mysql deployment and service
+`make k:deploy-db` create mysql deployment and service
 
 `k get pods -n=dev-to`
 
@@ -90,9 +90,9 @@ Prepare
 
 ## Build application and deploy
 
-`make k:build` build app and create docker image inside minikube machine
+`make build-app` build app and create docker image inside minikube machine
 
-`make k:app` create app deployment and service
+`make deploy-app` create app deployment and service
 
 ## Check pods
 
