@@ -78,8 +78,11 @@ rm\:db:
 .PHONY: k\:setup
 .SILENT: k\:setup
 k\:setup:
+	rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases; \
+	rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases-prev; \
 	minikube -p dev.to start --cpus 2 --memory=4098; \
 	minikube -p dev.to addons enable ingress; \
+	minikube -p dev.to addons enable metrics-server; \
 	kubectl create namespace dev-to
 
 # Rule "k:all"
