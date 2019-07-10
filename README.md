@@ -98,6 +98,28 @@ Prepare
 
 `k get pods -n=dev-to`
 
+Delete pod
+`k delete pod -n dev-to myapp-f6774f497-82w4r`
+
+Replicas
+`k get rs -n dev-to`
+
+Scale
+`kubectl -n dev-to scale deployment/myapp --replicas=2`
+
+`
+while true
+do curl "http://192.168.99.141:30358/hello"
+echo
+sleep 2
+done
+`
+Hello myapp-f6774f497-sbzzh/172.17.0.9
+curl: (7) Failed to connect to 192.168.99.141 port 30358: Connection refused
+
+Ocorre erro quando escala porque não temos o /health
+
+
 ## Check app url
 `minikube -p=dev.to service -n dev-to myapp --url`
 
@@ -105,6 +127,27 @@ Change your IP and PORT as you need it
 
 `curl -X GET http://192.168.99.132:31838/persons`
 
+Add new Person
+`curl -X POST http://192.168.99.132:31838/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
+
 ## Minikube dashboard
 
 `minikube -p dev.to dashboard`
+
+## Part four - debug app:
+
+add   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n -Xms256m -Xmx512m -XX:MaxMetaspaceSize=128m"
+change CMD to ENTRYPOINT on Dockerfile
+
+`k get pods -n=dev-to`
+
+`k port-forward -n=dev-to <pod_name> 5005:5005`
+
+## Start all
+
+`make k:all`
+
+## Restart virtualbox ip
+
+`rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases`
+`rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases-prev`

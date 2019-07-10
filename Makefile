@@ -82,6 +82,11 @@ k\:setup:
 	minikube -p dev.to addons enable ingress; \
 	kubectl create namespace dev-to
 
+# Rule "k:all"
+.PHONY: k\:all
+.SILENT: k\:all
+k\:all: k\:setup k\:deploy-db k\:build-app k\:build-image k\:deploy-app
+
 # Rule "k:start"
 .PHONY: k\:start
 .SILENT: k\:start
@@ -97,18 +102,22 @@ k\:stop:
 # Rule "k:deploy-db"
 .SILENT: k\:deploy-db
 k\:deploy-db:
-	kubectl create -f kubernetes/mysql/;
+	kubectl apply -f kubernetes/mysql/;
 
 # Rule "k:build-app"
 .SILENT: k\:build-app
 k\:build-app:
 	mvn clean install; \
+
+# Rule "k:build-image"
+.SILENT: k\:build-image
+k\:build-image:
 	eval $$(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .;
 
 # Rule "k:deploy-app"
 .SILENT: k\:deploy-app
 k\:deploy-app:
-	kubectl create -f kubernetes/app/;
+	kubectl apply -f kubernetes/app/;
 
 # Rule "k:delete"
 .SILENT: k\:delete

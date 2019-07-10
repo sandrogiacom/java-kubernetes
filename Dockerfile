@@ -7,5 +7,4 @@ WORKDIR /usr/myapp
 
 EXPOSE 8080
 
-CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
-
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar app.jar" ]
