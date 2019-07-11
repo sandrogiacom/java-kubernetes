@@ -21,7 +21,7 @@ git clone https://github.com/sandrogiacom/java-kubernetes.git
 
 **Build application**
 ```bash
-make build
+mvn clean install
 ```
 
 **Start the database**
@@ -31,7 +31,7 @@ make run:db
 
 **Run application**
 ```bash
-java -jar target/java-kubernetes-0.0.1-SNAPSHOT.jar
+java -jar target/java-kubernetes.jar
 ```
 
 **Check**
@@ -84,9 +84,9 @@ Prepare
 
 `make k:deploy-db` create mysql deployment and service
 
-`k get pods -n=dev-to`
+`k get pods -n dev-to`
 
-`k port-forward -n=dev-to <pod_name> 3306:3306`
+`k port-forward -n dev-to <pod_name> 3306:3306`
 
 ## Build application and deploy
 
@@ -96,7 +96,7 @@ Prepare
 
 ## Check pods
 
-`k get pods -n=dev-to`
+`k get pods -n dev-to`
 
 Delete pod
 `k delete pod -n dev-to myapp-f6774f497-82w4r`
@@ -121,7 +121,7 @@ Ocorre erro quando escala porque não temos o /health
 
 
 ## Check app url
-`minikube -p=dev.to service -n dev-to myapp --url`
+`minikube -p dev.to service -n dev-to myapp --url`
 
 Change your IP and PORT as you need it
 
