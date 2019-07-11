@@ -59,12 +59,12 @@ make build
 
 Create and run the database
 ```bash
-make run:db
+make run-db
 ```
 
 Create and run the application
 ```bash
-make run:app
+make run-app
 ```
 
 **Check**
@@ -78,47 +78,49 @@ Now, we deploy application in a kunernetes cluster running in our machine
 Prepare
 
 ### Start minikube
-`make k:setup` start minikube, enable ingress and create namespace dev-to
+`make k-setup` start minikube, enable ingress and create namespace dev-to
 
 ### Deploy database
 
-`make k:deploy-db` create mysql deployment and service
+`make k-deploy-db` create mysql deployment and service
 
-`k get pods -n dev-to`
+`kubectl get pods -n dev-to`
 
-`k port-forward -n dev-to <pod_name> 3306:3306`
+`kubectl port-forward -n dev-to <pod_name> 3306:3306`
 
 ## Build application and deploy
 
-`make build-app` build app and create docker image inside minikube machine
+`make k-build-app` build app
 
-`make deploy-app` create app deployment and service
+`make k-build-image` create docker image inside minikube machine
+
+`make k-deploy-app` create app deployment and service
+
+## Map dev.local
+
+Edit `hosts` 
 
 ## Check pods
 
-`k get pods -n dev-to`
+`kubectl get pods -n dev-to`
 
 Delete pod
-`k delete pod -n dev-to myapp-f6774f497-82w4r`
+`kubectl delete pod -n dev-to myapp-f6774f497-82w4r`
 
 Replicas
-`k get rs -n dev-to`
+`kubectl get rs -n dev-to`
 
 Scale
 `kubectl -n dev-to scale deployment/myapp --replicas=2`
 
+View replicas
 `
 while true
-do curl "http://192.168.99.141:30358/hello"
+do curl "http://dev.local/hello"
 echo
 sleep 2
 done
 `
-Hello myapp-f6774f497-sbzzh/172.17.0.9
-curl: (7) Failed to connect to 192.168.99.141 port 30358: Connection refused
-
-Ocorre erro quando escala porque não temos o /health
-
 
 ## Check app url
 `minikube -p dev.to service -n dev-to myapp --url`
@@ -128,7 +130,7 @@ Change your IP and PORT as you need it
 `curl -X GET http://192.168.99.132:31838/persons`
 
 Add new Person
-`curl -X POST http://192.168.99.132:31838/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
+`curl -X POST http://192.168.99.100:31838/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
 
 ## Minikube dashboard
 
@@ -139,9 +141,9 @@ Add new Person
 add   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n -Xms256m -Xmx512m -XX:MaxMetaspaceSize=128m"
 change CMD to ENTRYPOINT on Dockerfile
 
-`k get pods -n=dev-to`
+`kubectl get pods -n=dev-to`
 
-`k port-forward -n=dev-to <pod_name> 5005:5005`
+`kubectl port-forward -n=dev-to <pod_name> 5005:5005`
 
 ## Start all
 
