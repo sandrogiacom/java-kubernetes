@@ -21,7 +21,7 @@ git clone https://github.com/sandrogiacom/java-kubernetes.git
 
 **Build application**
 ```bash
-make build
+mvn clean install
 ```
 
 **Start the database**
@@ -31,7 +31,7 @@ make run:db
 
 **Run application**
 ```bash
-java -jar target/java-kubernetes-0.0.1-SNAPSHOT.jar
+java -jar target/java-kubernetes.jar
 ```
 
 **Check**
@@ -48,7 +48,7 @@ RUN mkdir /usr/myapp
 COPY target/java-kubernetes-0.0.1-SNAPSHOT.jar /usr/myapp/app.jar
 WORKDIR /usr/myapp
 EXPOSE 8080
-CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar app.jar" ]
 ```
 
 **Build application and docker image**
@@ -59,12 +59,12 @@ make build
 
 Create and run the database
 ```bash
-make run:db
+make run-db
 ```
 
 Create and run the application
 ```bash
-make run:app
+make run-app
 ```
 
 **Check**
@@ -78,33 +78,78 @@ Now, we deploy application in a kunernetes cluster running in our machine
 Prepare
 
 ### Start minikube
-`make k:setup` start minikube, enable ingress and create namespace dev-to
+`make k-setup` start minikube, enable ingress and create namespace dev-to
 
 ### Deploy database
 
-`make k:db` create mysql deployment and service
+`make k-deploy-db` create mysql deployment and service
 
-`k get pods -n=dev-to`
+`kubectl get pods -n dev-to`
 
-`k port-forward -n=dev-to <pod_name> 3306:3306`
+`kubectl port-forward -n dev-to <pod_name> 3306:3306`
 
 ## Build application and deploy
 
-`make k:build` build app and create docker image inside minikube machine
+`make k-build-app` build app
 
-`make k:app` create app deployment and service
+`make k-build-image` create docker image inside minikube machine
+
+`make k-deploy-app` create app deployment and service
+
+## Map dev.local
+
+Edit `hosts` 
 
 ## Check pods
 
-`k get pods -n=dev-to`
+`kubectl get pods -n dev-to`
+
+Delete pod
+`kubectl delete pod -n dev-to myapp-f6774f497-82w4r`
+
+Replicas
+`kubectl get rs -n dev-to`
+
+Scale
+`kubectl -n dev-to scale deployment/myapp --replicas=2`
+
+View replicas
+`
+while true
+do curl "http://dev.local/hello"
+echo
+sleep 2
+done
+`
 
 ## Check app url
-`minikube -p=dev.to service -n dev-to myapp --url`
+`minikube -p dev.to service -n dev-to myapp --url`
 
 Change your IP and PORT as you need it
 
 `curl -X GET http://192.168.99.132:31838/persons`
 
+Add new Person
+`curl -X POST http://192.168.99.100:31838/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
+
 ## Minikube dashboard
 
 `minikube -p dev.to dashboard`
+
+## Part four - debug app:
+
+add   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n -Xms256m -Xmx512m -XX:MaxMetaspaceSize=128m"
+change CMD to ENTRYPOINT on Dockerfile
+
+`kubectl get pods -n=dev-to`
+
+`kubectl port-forward -n=dev-to <pod_name> 5005:5005`
+
+## Start all
+
+`make k:all`
+
+## Restart virtualbox ip
+
+`rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases`
+`rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases-prev`
