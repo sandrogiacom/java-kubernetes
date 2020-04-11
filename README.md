@@ -26,7 +26,7 @@ mvn clean install
 
 **Start the database**
 ```bash
-make run:db
+make run-db
 ```
 
 **Run application**
@@ -43,9 +43,9 @@ http://localhost:8080/persons
 Create a Dockerfile:
 
 ```yaml
-FROM openjdk:11.0.3-jdk-slim
+FROM openjdk:14-alpine
 RUN mkdir /usr/myapp
-COPY target/java-kubernetes-0.0.1-SNAPSHOT.jar /usr/myapp/app.jar
+COPY target/java-kubernetes.jar /usr/myapp/app.jar
 WORKDIR /usr/myapp
 EXPOSE 8080
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar app.jar" ]
@@ -68,12 +68,12 @@ make run-app
 ```
 
 **Check**
-http://localhost:8080/persons
+http://localhost:8080/app/persons
 
 ## Part three - app on Kubernetes:
 
 We have an application and image running in docker
-Now, we deploy application in a kunernetes cluster running in our machine
+Now, we deploy application in a kubernetes cluster running in our machine
 
 Prepare
 
@@ -116,7 +116,7 @@ Scale
 View replicas
 `
 while true
-do curl "http://dev.local/hello"
+do curl "http://dev.local/app/hello"
 echo
 sleep 2
 done
@@ -153,3 +153,31 @@ change CMD to ENTRYPOINT on Dockerfile
 
 `rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases`
 `rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases-prev`
+
+
+## Install Istio
+
+curl -L https://istio.io/downloadIstio | sh - 
+export PATH="$PATH:/home/sandro/istio-1.4.2/bin" 
+istioctl manifest apply --set profile=demo
+
+kubectl label namespace default istio-injection=enabled
+kubectl label dev-to default istio-injection=enabled
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-istio-with-kubernetes
+
+https://grafana.com/grafana/dashboards/4701
+https://grafana.com/grafana/dashboards/6756
+
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
+
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') 9090:9090 &
+
+add prometheus job
+    - job_name: 'myapp'
+      metrics_path: '/actuator/prometheus'
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - dev-to

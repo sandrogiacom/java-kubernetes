@@ -8,7 +8,7 @@ spec:
     - host: dev.local
       http:
         paths:
-          - path: /
+          - path: /app
             backend:
               serviceName: myapp
               servicePort: 8080

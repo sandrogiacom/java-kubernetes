@@ -11,10 +11,10 @@ help:
 	echo "build 		- build application and generate docker image"
 	echo "run-db 		- run mysql database on docker"
 	echo "run-app		- run application on docker"
-	echo "stop-app	- stop application"
+	echo "stop-app	    - stop application"
 	echo "stop-db		- stop database"
 	echo "rm-app		- stop and delete application"
-	echo "rm-db		- stop and delete database"
+	echo "rm-db		    - stop and delete database"
 	echo ""
 	echo "k-setup		- init minikube machine"
 	echo "k-deploy-db	- deploy mysql on cluster"
@@ -22,12 +22,12 @@ help:
 	echo "k-deploy-app	- deploy app on cluster"
 	echo ""
 	echo "k-start		- start minikube machine"
-	echo "k-all		- do all the above k- steps"
+	echo "k-all		    - do all the above k- steps"
 	echo "k-stop		- stop minikube machine"
-	echo "k-delete	- stop and delete minikube machine"
+	echo "k-delete	    - stop and delete minikube machine"
 	echo ""
-	echo "check		- check tools versions"
-	echo "help		- show this message"
+	echo "check		    - check tools versions"
+	echo "help		    - show this message"
 
 build:
 	mvn clean install; \
@@ -40,13 +40,13 @@ run-app: stop-app rm-app
 	docker run --name myapp -p 8080:8080 -d -e DATABASE_SERVER_NAME=mysql57 --link mysql57:mysql57 java-k8s:latest
 
 stop-app:
-	docker stop myapp; \
+	docker stop myapp
 
 stop-db:
 	docker stop mysql57
 
 rm-app:	stop-app
-	docker rm myapp; \
+	docker rm myapp
 
 rm-db: stop-db
 	docker rm mysql57
@@ -70,6 +70,9 @@ k-build-image:
 
 k-deploy-app:
 	kubectl apply -f kubernetes/app/;
+
+k-delete-app:
+	kubectl delete -f kubernetes/app/;
 
 k-start:
 	minikube -p dev.to start;

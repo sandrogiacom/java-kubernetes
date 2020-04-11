@@ -6,7 +6,7 @@ metadata:
   labels:
     app: myapp
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: myapp
@@ -27,7 +27,7 @@ spec:
                   name: myapp
             livenessProbe:
               httpGet:
-                path: /health
+                path: /app/health
                 port: 8080
               initialDelaySeconds: 60
               periodSeconds: 5
