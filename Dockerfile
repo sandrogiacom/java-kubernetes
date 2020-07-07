@@ -7,4 +7,4 @@ WORKDIR /usr/myapp
 
 EXPOSE 8080
 
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar app.jar" ]
+ENTRYPOINT [ "sh", "-c", "java --enable-preview $JAVA_OPTS -jar app.jar" ]

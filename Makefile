@@ -40,16 +40,16 @@ run-app: stop-app rm-app
 	docker run --name myapp -p 8080:8080 -d -e DATABASE_SERVER_NAME=mysql57 --link mysql57:mysql57 java-k8s:latest
 
 stop-app:
-	docker stop myapp
+	- docker stop myapp
 
 stop-db:
-	docker stop mysql57
+	- docker stop mysql57
 
 rm-app:	stop-app
-	docker rm myapp
+	- docker rm myapp
 
 rm-db: stop-db
-	docker rm mysql57
+	- docker rm mysql57
 
 k-setup:
 	rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases; \

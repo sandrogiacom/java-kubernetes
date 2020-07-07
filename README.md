@@ -35,7 +35,7 @@ java -jar target/java-kubernetes.jar
 ```
 
 **Check**
-http://localhost:8080/persons
+http://localhost:8080/app/persons
 
 
 ## Part two - app on Docker:
@@ -69,6 +69,7 @@ make run-app
 
 **Check**
 http://localhost:8080/app/persons
+http://localhost:8080/app/hello
 
 ## Part three - app on Kubernetes:
 
@@ -96,29 +97,51 @@ Prepare
 
 `make k-deploy-app` create app deployment and service
 
-## Map dev.local
+**Check**
 
-Edit `hosts` 
+`kubectl get services -n dev-to`
+
+`minikube -p dev.to service -n dev-to myapp --url`
+
+http://172.17.0.5:32594/app/persons
+http://172.17.0.5:32594/app/hello
 
 ## Check pods
 
 `kubectl get pods -n dev-to`
+`kubectl -n dev-to logs myapp-6ccb69fcbc-rqkpx`
 
-Delete pod
-`kubectl delete pod -n dev-to myapp-f6774f497-82w4r`
+## Map to dev.local
+
+get minikube IP
+`minikube -p dev.to ip ` 
+
+Edit `hosts` 
 
 Replicas
 `kubectl get rs -n dev-to`
 
+Get and Delete pod
+`kubectl get pods -n dev-to`
+`kubectl delete pod -n dev-to myapp-f6774f497-82w4r`
+
 Scale
 `kubectl -n dev-to scale deployment/myapp --replicas=2`
 
-View replicas
+Test replicas
 `
 while true
 do curl "http://dev.local/app/hello"
 echo
 sleep 2
+done
+`
+Test replicas with wait
+
+`
+while true
+do curl "http://dev.local/app/wait"
+echo
 done
 `
 
@@ -127,10 +150,10 @@ done
 
 Change your IP and PORT as you need it
 
-`curl -X GET http://192.168.99.132:31838/persons`
+`curl -X GET http://dev.local/persons`
 
 Add new Person
-`curl -X POST http://192.168.99.100:31838/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
+`curl -X POST http://dev.local/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
 
 ## Minikube dashboard
 

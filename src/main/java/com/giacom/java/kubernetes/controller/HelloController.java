@@ -12,14 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @GetMapping
-    public String sayHello() {
-        InetAddress ip = null;
-        try {
-            ip = InetAddress.getLocalHost();
-            System.out.println("Your current host/IP address : " + ip);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+    public String sayHello() throws UnknownHostException {
+        InetAddress ip = InetAddress.getLocalHost();
+        System.out.println("Your current host/IP address : " + ip);
         return "Hello " + ip;
     }
 
