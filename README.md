@@ -99,34 +99,54 @@ Prepare
 
 **Check**
 
-`kubectl get services -n dev-to`
+`
+kubectl get services -n dev-to
+`
 
-`minikube -p dev.to service -n dev-to myapp --url`
+`
+minikube -p dev.to service -n dev-to myapp --url
+`
 
 http://172.17.0.5:32594/app/persons
 http://172.17.0.5:32594/app/hello
 
 ## Check pods
 
-`kubectl get pods -n dev-to`
-`kubectl -n dev-to logs myapp-6ccb69fcbc-rqkpx`
+`
+kubectl get pods -n dev-to
+`
+
+`
+kubectl -n dev-to logs myapp-6ccb69fcbc-rqkpx
+`
 
 ## Map to dev.local
 
 get minikube IP
-`minikube -p dev.to ip ` 
+`
+minikube -p dev.to ip
+` 
 
 Edit `hosts` 
 
 Replicas
-`kubectl get rs -n dev-to`
+`
+kubectl get rs -n dev-to
+`
 
 Get and Delete pod
-`kubectl get pods -n dev-to`
-`kubectl delete pod -n dev-to myapp-f6774f497-82w4r`
+`
+kubectl get pods -n dev-to
+`
+
+`
+kubectl delete pod -n dev-to myapp-f6774f497-82w4r
+`
 
 Scale
-`kubectl -n dev-to scale deployment/myapp --replicas=2`
+`
+kubectl -n dev-to scale deployment/myapp --replicas=2
+`
 
 Test replicas
 `
@@ -150,14 +170,25 @@ done
 
 Change your IP and PORT as you need it
 
-`curl -X GET http://dev.local/persons`
+`
+curl -X GET http://dev.local/app/persons
+`
 
 Add new Person
-`curl -X POST http://dev.local/persons -H "Content-Type: application/json" -d '{"name": "New Person", "birthDate": "2000-10-01"}'`
+`
+curl --location --request POST 'http://dev.local/app/persons' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "new person",
+    "birthDate": "2010-10-01"
+}'
+`
 
 ## Minikube dashboard
 
-`minikube -p dev.to dashboard`
+`
+minikube -p dev.to dashboard
+`
 
 ## Part four - debug app:
 
