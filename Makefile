@@ -87,5 +87,4 @@ check:
 	echo "make version " && make --version && echo
 	minikube version && echo
 	echo "kubectl version" && kubectl version --short --client && echo
-	echo "virtualbox version" && vboxmanage --version  && echo
 

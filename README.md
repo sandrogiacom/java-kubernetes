@@ -203,12 +203,6 @@ change CMD to ENTRYPOINT on Dockerfile
 
 `make k:all`
 
-## Restart virtualbox ip
-
-`rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases`
-`rm  ~/.config/VirtualBox/HostInterfaceNetworking-vboxnet0-Dhcpd.leases-prev`
-
-
 ## Install Istio
 
 curl -L https://istio.io/downloadIstio | sh - 
