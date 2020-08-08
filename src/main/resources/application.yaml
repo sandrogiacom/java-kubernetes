@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://${DATABASE_SERVER_NAME:localhost}:3306/k8s_java
-    username: ${DATABASE_USER_NAME:myapp}
-    password: ${DATABASE_USER_PASSWORD:myapp_pwd}
+    username: ${DATABASE_USER_NAME:java}
+    password: ${DATABASE_USER_PASSWORD:1234}
   jpa:
     hibernate:
       # dont do this in production!!

@@ -9,18 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.giacom.java.kubernetes.domain.Person;
-import com.giacom.java.kubernetes.persistence.PersonRepository;
-import com.giacom.java.kubernetes.service.PersonService;
+import com.giacom.java.kubernetes.domain.User;
+import com.giacom.java.kubernetes.persistence.UserRepository;
+import com.giacom.java.kubernetes.service.UserService;
 
 @SpringBootApplication
 public class JavaKubernetesApplication {
 
     @Autowired
-    private PersonService service;
+    private UserService service;
 
     @Autowired
-    private PersonRepository repository;
+    private UserRepository repository;
 
     public static void main(String[] args) {
         SpringApplication.run(JavaKubernetesApplication.class, args);
@@ -31,14 +31,14 @@ public class JavaKubernetesApplication {
 
         repository.deleteAll();
 
-        service.create(new Person("Minikube",
+        service.create(new User("Minikube",
                 LocalDate.of(2006, 10, 01)));
-        service.create(new Person("Kubectl",
+        service.create(new User("Kubectl",
                 LocalDate.of(1999, 05, 15)));
 
-        List<Person> findAll = service.findAll();
-        for (Person person : findAll) {
-            System.out.println(person.getId() + ":" + person.getName());
+        List<User> findAll = service.findAll();
+        for (User user : findAll) {
+            System.out.println(user.getId() + ":" + user.getName());
         }
 
     }

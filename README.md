@@ -8,7 +8,9 @@ https://dev.to/sandrogiacom/kubernetes-for-java-developers-setup-41nk
 
 ### Requirements:
 
-**Docker and Make**
+**Docker and Make (Optional)**
+
+**Java 14**
 
 ### Build and run application:
 
@@ -21,6 +23,7 @@ git clone https://github.com/sandrogiacom/java-kubernetes.git
 
 **Build application**
 ```bash
+cd java-kubernetes
 mvn clean install
 ```
 
@@ -31,12 +34,11 @@ make run-db
 
 **Run application**
 ```bash
-java -jar target/java-kubernetes.jar
+java --enable-preview -jar target/java-kubernetes.jar
 ```
 
 **Check**
-http://localhost:8080/app/persons
-
+http://localhost:8080/app/users
 
 ## Part two - app on Docker:
 
@@ -68,7 +70,7 @@ make run-app
 ```
 
 **Check**
-http://localhost:8080/app/persons
+http://localhost:8080/app/users
 http://localhost:8080/app/hello
 
 ## Part three - app on Kubernetes:
@@ -107,7 +109,7 @@ kubectl get services -n dev-to
 minikube -p dev.to service -n dev-to myapp --url
 `
 
-http://172.17.0.5:32594/app/persons
+http://172.17.0.5:32594/app/users
 http://172.17.0.5:32594/app/hello
 
 ## Check pods
@@ -171,15 +173,15 @@ done
 Change your IP and PORT as you need it
 
 `
-curl -X GET http://dev.local/app/persons
+curl -X GET http://dev.local/app/users
 `
 
-Add new Person
+Add new User
 `
-curl --location --request POST 'http://dev.local/app/persons' \
+curl --location --request POST 'http://dev.local/app/user' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "name": "new person",
+    "name": "new user",
     "birthDate": "2010-10-01"
 }'
 `

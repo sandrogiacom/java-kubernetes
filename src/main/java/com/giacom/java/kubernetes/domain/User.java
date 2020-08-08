@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Person {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,10 +20,10 @@ public class Person {
     @NotNull
     private LocalDate birthDate;
 
-    public Person() {
+    public User() {
     }
 
-    public Person(@NotNull String name, @NotNull LocalDate birthDate) {
+    public User(@NotNull String name, @NotNull LocalDate birthDate) {
         this.name = name;
         this.birthDate = birthDate;
     }
