@@ -244,43 +244,20 @@ curl --location --request POST 'http://dev.local/app/users' \
 }'
 `
 
-
 ## Part four - debug app:
 
 add   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n -Xms256m -Xmx512m -XX:MaxMetaspaceSize=128m"
 change CMD to ENTRYPOINT on Dockerfile
 
-`kubectl get pods -n=dev-to`
+`
+kubectl get pods -n=dev-to
+`
 
-`kubectl port-forward -n=dev-to <pod_name> 5005:5005`
+`
+kubectl port-forward -n=dev-to <pod_name> 5005:5005
+`
 
 ## Start all
 
 `make k:all`
 
-## Install Istio
-
-curl -L https://istio.io/downloadIstio | sh - 
-export PATH="$PATH:/home/sandro/istio-1.4.2/bin" 
-istioctl manifest apply --set profile=demo
-
-kubectl label namespace default istio-injection=enabled
-kubectl label dev-to default istio-injection=enabled
-
-https://www.digitalocean.com/community/tutorials/how-to-install-and-use-istio-with-kubernetes
-
-https://grafana.com/grafana/dashboards/4701
-https://grafana.com/grafana/dashboards/6756
-
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
-
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') 9090:9090 &
-
-add prometheus job
-    - job_name: 'myapp'
-      metrics_path: '/actuator/prometheus'
-      kubernetes_sd_configs:
-      - role: endpoints
-        namespaces:
-          names:
-          - dev-to

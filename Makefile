@@ -58,7 +58,7 @@ k-setup:
 	kubectl create namespace dev-to
 
 k-deploy-db:
-	kubectl apply -f kubernetes/mysql/;
+	kubectl apply -f k8s/mysql/;
 
 k-build-app:
 	mvn clean install; \
@@ -67,10 +67,10 @@ k-build-image:
 	eval $$(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .;
 
 k-deploy-app:
-	kubectl apply -f kubernetes/app/;
+	kubectl apply -f k8s/app/;
 
 k-delete-app:
-	kubectl delete -f kubernetes/app/;
+	kubectl delete -f k8s/app/;
 
 k-start:
 	minikube -p dev.to start;
