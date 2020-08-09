@@ -12,6 +12,10 @@ https://dev.to/sandrogiacom/kubernetes-for-java-developers-setup-41nk
 
 **Java 14**
 
+Help to install tools:
+
+https://github.com/sandrogiacom/k8s
+
 ### Build and run application:
 
 Spring boot and mysql database running on docker
@@ -257,7 +261,23 @@ kubectl get pods -n=dev-to
 kubectl port-forward -n=dev-to <pod_name> 5005:5005
 `
 
+## KubeNs and Stern
+
+`
+kubens dev-to
+`
+
+`
+stern myapp
+` 
+
 ## Start all
 
 `make k:all`
 
+
+## References
+
+https://kubernetes.io/docs/home/
+
+https://minikube.sigs.k8s.io/docs/
