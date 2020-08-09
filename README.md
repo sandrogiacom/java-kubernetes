@@ -38,7 +38,10 @@ java --enable-preview -jar target/java-kubernetes.jar
 ```
 
 **Check**
+
 http://localhost:8080/app/users
+
+http://localhost:8080/app/hello
 
 ## Part two - app on Docker:
 
@@ -70,8 +73,16 @@ make run-app
 ```
 
 **Check**
+
 http://localhost:8080/app/users
+
 http://localhost:8080/app/hello
+
+Stop all:
+
+`
+docker stop mysql57 myapp
+`
 
 ## Part three - app on Kubernetes:
 
@@ -83,27 +94,70 @@ Prepare
 ### Start minikube
 `make k-setup` start minikube, enable ingress and create namespace dev-to
 
+### Check IP
+
+`minikube -p dev.to ip`
+
+### Minikube dashboard
+
+`
+minikube -p dev.to dashboard
+`
+
 ### Deploy database
 
-`make k-deploy-db` create mysql deployment and service
+create mysql deployment and service
 
-`kubectl get pods -n dev-to`
+`
+make k-deploy-db
+`
 
-`kubectl port-forward -n dev-to <pod_name> 3306:3306`
+`
+kubectl get pods -n dev-to
+`
+
+`
+kubectl logs -n dev-to -f <pod_name>
+`
+
+`
+kubectl port-forward -n dev-to <pod_name> 3306:3306
+`
 
 ## Build application and deploy
 
-`make k-build-app` build app
+build app
 
-`make k-build-image` create docker image inside minikube machine
+`
+make k-build-app
+` 
 
-`make k-deploy-app` create app deployment and service
+create docker image inside minikube machine:
+
+`
+make k-build-image
+`
+
+OR
+
+`
+minikube cache add java-k8s
+`  
+
+
+create app deployment and service:
+
+`
+make k-deploy-app
+` 
 
 **Check**
 
 `
 kubectl get services -n dev-to
 `
+
+To access app:
 
 `
 minikube -p dev.to service -n dev-to myapp --url
@@ -130,6 +184,10 @@ minikube -p dev.to ip
 ` 
 
 Edit `hosts` 
+
+`
+sudo vim /etc/hosts
+`
 
 Replicas
 `
@@ -178,7 +236,7 @@ curl -X GET http://dev.local/app/users
 
 Add new User
 `
-curl --location --request POST 'http://dev.local/app/user' \
+curl --location --request POST 'http://dev.local/app/users' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "new user",
@@ -186,11 +244,6 @@ curl --location --request POST 'http://dev.local/app/user' \
 }'
 `
 
-## Minikube dashboard
-
-`
-minikube -p dev.to dashboard
-`
 
 ## Part four - debug app:
 
