@@ -52,7 +52,7 @@ rm-db: stop-db
 	- docker rm mysql57
 
 k-setup:
-	minikube -p dev.to start --cpus 2 --memory=4098; \
+	minikube -p dev.to start --cpus 4 --memory=8194; \
 	minikube -p dev.to addons enable ingress; \
 	minikube -p dev.to addons enable metrics-server; \
 	kubectl create namespace dev-to
@@ -65,6 +65,9 @@ k-build-app:
 
 k-build-image:
 	eval $$(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .;
+
+k-cache-image:
+	minikube cache add java-k8s;
 
 k-deploy-app:
 	kubectl apply -f k8s/app/;

@@ -10,7 +10,7 @@ https://dev.to/sandrogiacom/kubernetes-for-java-developers-setup-41nk
 
 **Docker and Make (Optional)**
 
-**Java 14**
+**Java 15**
 
 Help to install tools:
 
@@ -52,12 +52,12 @@ http://localhost:8080/app/hello
 Create a Dockerfile:
 
 ```yaml
-FROM openjdk:14-alpine
+FROM openjdk:15-alpine
 RUN mkdir /usr/myapp
 COPY target/java-kubernetes.jar /usr/myapp/app.jar
 WORKDIR /usr/myapp
 EXPOSE 8080
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar app.jar" ]
+ENTRYPOINT [ "sh", "-c", "java --enable-preview $JAVA_OPTS -jar app.jar" ]
 ```
 
 **Build application and docker image**
@@ -96,11 +96,16 @@ Now, we deploy application in a kubernetes cluster running in our machine
 Prepare
 
 ### Start minikube
-`make k-setup` start minikube, enable ingress and create namespace dev-to
+`
+make k-setup
+`
+ start minikube, enable ingress and create namespace dev-to
 
 ### Check IP
 
-`minikube -p dev.to ip`
+`
+minikube -p dev.to ip
+`
 
 ### Minikube dashboard
 
@@ -119,6 +124,13 @@ make k-deploy-db
 `
 kubectl get pods -n dev-to
 `
+
+OR
+
+`
+watch k get pods -n dev-to
+`
+
 
 `
 kubectl logs -n dev-to -f <pod_name>
@@ -145,7 +157,7 @@ make k-build-image
 OR
 
 `
-minikube cache add java-k8s
+make k-cache-image
 `  
 
 
@@ -167,8 +179,10 @@ To access app:
 minikube -p dev.to service -n dev-to myapp --url
 `
 
-http://172.17.0.5:32594/app/users
-http://172.17.0.5:32594/app/hello
+Ex:
+
+http://172.17.0.3:32594/app/users
+http://172.17.0.3:32594/app/hello
 
 ## Check pods
 

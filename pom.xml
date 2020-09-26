@@ -15,7 +15,7 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>15</java.version>
         <git.commit.plugin.version>4.0.0</git.commit.plugin.version>
         <maven-enforcer-plugin.version>3.0.0-atlassian-m01</maven-enforcer-plugin.version>
     </properties>
