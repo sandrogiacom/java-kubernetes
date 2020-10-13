@@ -295,3 +295,32 @@ stern myapp
 https://kubernetes.io/docs/home/
 
 https://minikube.sigs.k8s.io/docs/
+
+
+## TODO
+
+Enable Istio
+
+https://github.com/IBM/cloud-native-starter
+https://github.com/IBM/cloud-native-starter/blob/master/documentation/DemoTrafficRouting.md
+https://dzone.com/articles/setup-of-a-local-kubernetes-and-istio-dev-environm-1
+
+λ minikube -p dev.to addons enable istio-provisioner
+λ minikube -p dev.to addons enable istio           
+
+λ kubectl label namespace dev-to istio-injection=enabled                                                
+https://istio.io/latest/docs/ops/integrations/jaeger/
+
+https://istio.io/latest/docs/ops/integrations/grafana/
+
+λ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.7/samples/addons/grafana.yaml
+
+λ istioctl dashboard grafana
+
+
+Show services
+λ minikube -p dev.to service list           
+
+kubectl get svc istio-ingressgateway -n istio-system
+
+https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/
