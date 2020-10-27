@@ -160,7 +160,6 @@ OR
 make k-cache-image
 `  
 
-
 create app deployment and service:
 
 `
@@ -264,7 +263,8 @@ curl --location --request POST 'http://dev.local/app/users' \
 
 ## Part four - debug app:
 
-add   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n -Xms256m -Xmx512m -XX:MaxMetaspaceSize=128m"
+add   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
+ 
 change CMD to ENTRYPOINT on Dockerfile
 
 `
@@ -295,3 +295,14 @@ stern myapp
 https://kubernetes.io/docs/home/
 
 https://minikube.sigs.k8s.io/docs/
+
+## Useful commands
+
+```
+##List profiles
+minikube profile list
+
+kubectl top node
+
+kubectl top pod <nome_do_pod>
+```
