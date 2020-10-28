@@ -76,6 +76,9 @@ k-deploy-app:
 k-delete-app:
 	kubectl delete -f k8s/app/;
 
+k-delete-db:
+	kubectl delete -f k8s/mysql/;
+
 k-start:
 	minikube -p dev.to start;
 
