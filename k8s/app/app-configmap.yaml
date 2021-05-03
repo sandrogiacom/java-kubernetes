@@ -7,5 +7,5 @@ data:
   DATABASE_SERVER_NAME: "mysql"
   DATABASE_USER_NAME: "myapp"
   DATABASE_USER_PASSWORD: "myapp_pwd"
-#  JAVA_OPTS: "--enable-preview -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -XX:MaxRAMPercentage=80"
-  JAVA_OPTS: "--enable-preview -XX:MaxRAMPercentage=80"
+  JAVA_OPTS: "--enable-preview -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -XX:MaxRAMPercentage=80"
+  #JAVA_OPTS: "--enable-preview -XX:MaxRAMPercentage=80"
